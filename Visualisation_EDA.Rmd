@@ -1,0 +1,29 @@
+---
+title: "Visualisation and EDA"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+library(patchwork)
+library(p8105.datasets)
+```
+
+```{r}
+data("weather_df")
+```
+
+Let's make out basic catterplot
+
+```{r}
+weather_df |>
+     ggplot(aes(x = tmin, y = tmax)) + 
+     geom_point(aes(color = name), alpha = 0.5) +
+     labs(
+       x = "Minimum daily temp",
+       y = "Maximum daily temp",
+       title = "Temperature scatterplot",
+       caption = "Data from NOAA"
+     )
+```
+
