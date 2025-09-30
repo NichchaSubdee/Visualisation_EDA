@@ -27,3 +27,88 @@ weather_df |>
      )
 ```
 
+## Scale
+
+```{r}
+weather_df |>
+     ggplot(aes(x = tmin, y = tmax)) + 
+     geom_point(aes(color = name), alpha = 0.5) +
+     labs(
+       x = "Minimum daily temp",
+       y = "Maximum daily temp",
+       title = "Temperature scatterplot",
+       caption = "Data from NOAA"
+     ) +
+  scale_x_continuous(
+    breaks = c(-20, 0, 25),
+    labels = c("-20C", "0", "25")
+  ) +
+  scale_y_continuous(
+    trans = "sqrt",
+    limits = c(10, 30)
+  )
+```
+
+```{r}
+weather_df |>
+     filter(tmax > 10, tmax < 30) |> 
+     ggplot(aes(x = tmin, y = tmax)) + 
+     geom_point(aes(color = name), alpha = 0.5) +
+     labs(
+       x = "Minimum daily temp",
+       y = "Maximum daily temp",
+       title = "Temperature scatterplot",
+       caption = "Data from NOAA"
+     ) +
+  scale_x_continuous(
+    breaks = c(-20, 0, 25),
+    labels = c("-20C", "0", "25")
+  ) +
+  scale_y_continuous(
+    trans = "sqrt",
+    limits = c(10, 30)
+  )
+```
+
+```{r}
+weather_df |>
+     filter(tmax > 10, tmax < 30) |> 
+     ggplot(aes(x = tmin, y = tmax)) + 
+     geom_point(aes(color = name), alpha = 0.5) +
+     labs(
+       x = "Minimum daily temp",
+       y = "Maximum daily temp",
+       title = "Temperature scatterplot",
+       caption = "Data from NOAA"
+     ) +
+  scale_x_continuous(
+    breaks = c(-20, 0, 25),
+    labels = c("-20C", "0", "25")
+  ) +
+  scale_color_hue(h = c(100, 300))
+# change color like this is not good idea to do, do viridis package
+```
+
+```{r}
+library(viridis)
+```
+
+```{r}
+ggp_temp_plot = 
+  weather_df |> 
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = .5) + 
+  labs(
+    title = "Temperature plot",
+    x = "Minimum daily temperature (C)",
+    y = "Maxiumum daily temperature (C)",
+    color = "Location",
+    caption = "Data from the rnoaa package"
+  ) + 
+  viridis::scale_color_viridis(
+    name = "Location", 
+    discrete = TRUE
+  )
+ggp_temp_plot
+```
+
