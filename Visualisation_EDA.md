@@ -309,7 +309,9 @@ ggp_temp_season
 Let’s make temperature violin plots
 
 ``` r
-weather_df |> 
+weather_df |>
+  mutate(name = fct_relevel(name, c("Molokai_HI", "CentralPark_NY", "Waterhole_WA"))) |> 
+  
   ggplot(aes(x = name, y = tmax, fill = name)) + 
   geom_violin(alpha = 0.5)
 ```
@@ -318,3 +320,45 @@ weather_df |>
     ## (`stat_ydensity()`).
 
 ![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+``` r
+weather_df |> 
+  mutate(name = fct_reorder(name, tmax)) |> 
+  ggplot(aes(x = name, y = tmax, fill = name)) + 
+  geom_violin(alpha = 0.5)
+```
+
+    ## Warning: There was 1 warning in `mutate()`.
+    ## ℹ In argument: `name = fct_reorder(name, tmax)`.
+    ## Caused by warning:
+    ## ! `fct_reorder()` removing 17 missing values.
+    ## ℹ Use `.na_rm = TRUE` to silence this message.
+    ## ℹ Use `.na_rm = FALSE` to preserve NAs.
+
+    ## Warning: Removed 17 rows containing non-finite outside the scale range
+    ## (`stat_ydensity()`).
+
+![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+What about data tidiness?
+
+``` r
+pulse_df =
+  haven::read_sas("./data/public_pulse_data.sas7bdat") |> 
+  janitor::clean_names() |> 
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit",
+    values_to = "bdi"
+  ) |> 
+    mutate(visit = fct_inorder(visit))
+
+pulse_df |> 
+  ggplot(aes(x = visit, y = bdi)) +
+  geom_boxplot()
+```
+
+    ## Warning: Removed 879 rows containing non-finite outside the scale range
+    ## (`stat_boxplot()`).
+
+![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
