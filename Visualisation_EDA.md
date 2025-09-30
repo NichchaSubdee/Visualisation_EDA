@@ -152,3 +152,53 @@ ggp_temp_plot
     ## (`geom_point()`).
 
 ![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+## Themes
+
+make my base plot
+
+``` r
+ggp_temperature = 
+  weather_df |> 
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = .5) + 
+  labs(
+    title = "Temperature plot",
+    x = "Minimum daily temperature (C)",
+    y = "Maxiumum daily temperature (C)",
+    color = "Location",
+    caption = "Data from the rnoaa package"
+  ) + 
+  viridis::scale_color_viridis(
+    discrete = TRUE
+  )
+ggp_temperature
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+``` r
+ggsave("weather_temperature.png", ggp_temperature)
+```
+
+    ## Saving 7 x 5 in image
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+Update my base plot
+
+``` r
+ggp_temperature +
+  theme_bw() +
+  theme_minimal()+
+  theme(legend.position = "bottom")
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
