@@ -194,7 +194,7 @@ Update my base plot
 ``` r
 ggp_temperature +
   theme_bw() +
-  theme_minimal()+
+  theme_minimal() +
   theme(legend.position = "bottom")
 ```
 
@@ -214,7 +214,7 @@ molokai_df =
   weather_df |> 
   filter(name == "Molokai_HI")
 
-ggplot(data = molokai_df, aes(x = date, y = tmax, color = name))+
+ggplot(data = molokai_df, aes(x = date, y = tmax, color = name)) +
   geom_point()
 ```
 
@@ -230,3 +230,91 @@ ggplot(data = molokai_df, aes(x = date, y = tmax, color = name))+
     ## geom_line: na.rm = FALSE, orientation = NA, arrow = NULL, arrow.fill = NULL, lineend = butt, linejoin = round, linemitre = 10
     ## stat_identity: na.rm = FALSE
     ## position_identity
+
+## `patchwork`
+
+Make three plots and combine using patchwork
+
+``` r
+ggp_tmax_tmin =
+  weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5)
+
+ggp_prec_density = 
+  weather_df |>
+  filter(prcp > 0) |> 
+  ggplot(aes(x = prcp, fill = name)) + 
+  geom_density(alpha = 0.5)
+  theme(legend.position = "none")
+```
+
+    ## <theme> List of 1
+    ##  $ legend.position: chr "none"
+    ##  @ complete: logi FALSE
+    ##  @ validate: logi TRUE
+
+``` r
+ggp_temp_season =
+  weather_df |> 
+  ggplot(aes(x = date, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(se = FALSE)
+
+ggp_tmax_tmin
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+``` r
+ggp_prec_density
+```
+
+![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
+
+``` r
+ggp_temp_season
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+    ## Warning: Removed 17 rows containing non-finite outside the scale range
+    ## (`stat_smooth()`).
+    ## Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-12-3.png)<!-- -->
+
+``` r
+(ggp_tmax_tmin + ggp_prec_density)/ggp_temp_season
+```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+    ## Warning: Removed 17 rows containing non-finite outside the scale range
+    ## (`stat_smooth()`).
+    ## Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-12-4.png)<!-- -->
+
+## Data manipulation
+
+Let’s make temperature violin plots
+
+``` r
+weather_df |> 
+  ggplot(aes(x = name, y = tmax, fill = name)) + 
+  geom_violin(alpha = 0.5)
+```
+
+    ## Warning: Removed 17 rows containing non-finite outside the scale range
+    ## (`stat_ydensity()`).
+
+![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->

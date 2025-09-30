@@ -139,7 +139,7 @@ Update my base plot
 ```{r}
 ggp_temperature +
   theme_bw() +
-  theme_minimal()+
+  theme_minimal() +
   theme(legend.position = "bottom")
 
 ```
@@ -154,10 +154,50 @@ molokai_df =
   weather_df |> 
   filter(name == "Molokai_HI")
 
-ggplot(data = molokai_df, aes(x = date, y = tmax, color = name))+
+ggplot(data = molokai_df, aes(x = date, y = tmax, color = name)) +
   geom_point()
   geom_line(data = central_park_df)
 
+```
+
+
+## `patchwork`
+
+Make three plots and combine using patchwork
+```{r}
+ggp_tmax_tmin =
+  weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5)
+
+ggp_prec_density = 
+  weather_df |>
+  filter(prcp > 0) |> 
+  ggplot(aes(x = prcp, fill = name)) + 
+  geom_density(alpha = 0.5)
+  theme(legend.position = "none")
+
+ggp_temp_season =
+  weather_df |> 
+  ggplot(aes(x = date, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(se = FALSE)
+
+ggp_tmax_tmin
+ggp_prec_density
+ggp_temp_season
+
+(ggp_tmax_tmin + ggp_prec_density)/ggp_temp_season
+```
+
+## Data manipulation
+
+Let's make temperature violin plots
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = name, y = tmax, fill = name)) + 
+  geom_violin(alpha = 0.5)
 ```
 
 
