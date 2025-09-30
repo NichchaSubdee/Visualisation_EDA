@@ -202,3 +202,31 @@ ggp_temperature +
     ## (`geom_point()`).
 
 ![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+## Adding data in geoms
+
+``` r
+central_park_df =
+  weather_df |> 
+  filter(name == "CentralPark_NY")
+
+molokai_df =
+  weather_df |> 
+  filter(name == "Molokai_HI")
+
+ggplot(data = molokai_df, aes(x = date, y = tmax, color = name))+
+  geom_point()
+```
+
+    ## Warning: Removed 1 row containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](Visualisation_EDA_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+``` r
+  geom_line(data = central_park_df)
+```
+
+    ## geom_line: na.rm = FALSE, orientation = NA, arrow = NULL, arrow.fill = NULL, lineend = butt, linejoin = round, linemitre = 10
+    ## stat_identity: na.rm = FALSE
+    ## position_identity
